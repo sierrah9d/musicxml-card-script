@@ -36,7 +36,7 @@ async function downloadMusicXML(url) {
   }
 }
 
-// MusicXMLを順番に繋げる関数（省略せず完全実装）
+// MusicXMLを順番に繋げる関数
 function combineMusicXML(xmlStrings) {
   if (xmlStrings.length === 0) return null;
   if (xmlStrings.length === 1) return xmlStrings[0];
