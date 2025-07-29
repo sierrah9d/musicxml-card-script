@@ -2,12 +2,12 @@
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.1">
   <work>
-    <work-title>Lv1_03</work-title>
+    <work-title>lv1_03</work-title>
   </work>
   <identification>
     <encoding>
       <software>Flat</software>
-      <encoding-date>2025-07-22</encoding-date>
+      <encoding-date>2025-07-29</encoding-date>
     </encoding>
     <source>https://flat.io/score/687f4078f6cd232dd5f1672c-lv103</source>
   </identification>
@@ -35,7 +35,7 @@
   </defaults>
   <credit>
     <credit-type>title</credit-type>
-    <credit-words>Lv1_03</credit-words>
+    <credit-words>lv1_03</credit-words>
   </credit>
   <part-list>
     <score-part id="P1">
@@ -106,148 +106,6 @@
           <alter>-1</alter>
           <octave>4</octave>
         </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-    </measure>
-    <measure number="2">
-      <attributes/>
-      <note>
-        <pitch>
-          <step>C</step>
-          <octave>5</octave>
-        </pitch>
-        <duration>4</duration>
-        <voice>1</voice>
-        <type>half</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <rest/>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-    </measure>
-    <measure number="3">
-      <attributes/>
-      <note>
-        <pitch>
-          <step>B</step>
-          <alter>-1</alter>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>C</step>
-          <octave>5</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>5</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-    </measure>
-    <measure number="4">
-      <attributes/>
-      <note>
-        <pitch>
-          <step>A</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>3</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <dot/>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>B</step>
-          <alter>-1</alter>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>eighth</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>A</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-    </measure>
-    <measure number="5">
-      <attributes/>
-      <note>
-        <pitch>
-          <step>G</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>G</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <pitch>
-          <step>E</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>2</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <staff>1</staff>
-      </note>
-    </measure>
-    <measure number="6">
-      <attributes/>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>4</duration>
-        <voice>1</voice>
-        <type>half</type>
-        <staff>1</staff>
-      </note>
-      <note>
-        <rest/>
         <duration>2</duration>
         <voice>1</voice>
         <type>quarter</type>
