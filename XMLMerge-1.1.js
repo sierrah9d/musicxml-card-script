@@ -1,43 +1,59 @@
-// �V���[�g�J�b�g�A�v������URL���󂯎����MusicXML���������ASeeScore2�ɋ��L����Scriptable�X�N���v�g
-// iCloud Drive�ɕۑ����ċ��L
-// Ver1.1
+// ========================================
+// XMLMerge-1.1.js
+// バージョン履歴
+// - v1.1 (2026-05-19):
+//   - 文字コード/文言/コメントを UTF-8 前提で統一
+//   - エラー文言をユーザー向けと開発者向けに分離
+//   - 主要ログへ識別子 [download] [merge] [share] を付与
+// ========================================
+// ショートカットアプリから URL を受け取り、複数の MusicXML を結合し SeeScore2 へ共有する Scriptable スクリプト
+// 保存先: iCloud Drive / Scriptable / Documents
 
-// �V���[�g�J�b�g����̓��͂��󂯎��
+// ショートカットからの入力を受け取る
 let urls = args.shortcutParameter;
 
-// URL���z��łȂ��ꍇ�͔z��ɕϊ�
+// URL が配列でない場合は配列化
 if (!Array.isArray(urls)) {
   urls = urls ? [urls] : [];
 }
 
-// URL�����݂��Ȃ��ꍇ�̏���
-if (!urls || urls.length === 0) {
+function showUserError(title, message) {
   let alert = new Alert();
-  alert.title = "�G���[";
-  alert.message = "URL���n����܂���ł���";
+  alert.title = title;
+  alert.message = message;
   alert.addAction("OK");
-  await alert.present();
+  return alert.present();
+}
+
+function logDeveloperError(context, error) {
+  const detail = error && error.stack ? error.stack : String(error);
+  console.error(`${context} ${detail}`);
+}
+
+// URL が空の場合
+if (!urls || urls.length === 0) {
+  await showUserError("エラー", "URL が指定されていません。ショートカットの入力を確認してください。");
   return;
 }
 
-// �ő�10�܂łɐ���
+// 最大 10 件までに制限
 urls = urls.slice(0, 10);
-console.log(`${urls.length}��URL����MusicXML���_�E�����[�h���܂�`);
+console.log(`[download] 対象 URL 数: ${urls.length}`);
 
-// MusicXML���_�E�����[�h����֐�
+// MusicXML をダウンロードする関数
 async function downloadMusicXML(url) {
   try {
     let request = new Request(url);
     let response = await request.loadString();
-    console.log(`�_�E�����[�h����: ${url}`);
+    console.log(`[download] 成功: ${url}`);
     return response;
   } catch (error) {
-    console.error(`�_�E�����[�h�G���[ ${url}: ${error}`);
+    logDeveloperError(`[download] 失敗 URL=${url}`, error);
     return null;
   }
 }
 
-// MusicXML�����ԂɌq����֐�
+// MusicXML を簡易 XML ノードに変換する関数
 function createXMLNode(name, attributes = {}) {
   return { name, attributes, children: [], text: "" };
 }
@@ -92,7 +108,7 @@ function parseMusicXML(xmlString) {
 
 function serializeXMLNode(node, indent = "") {
   let attrs = Object.entries(node.attributes || {});
-  let attrText = attrs.length ? " " + attrs.map(([k,v]) => `${k}="${escapeXMLAttribute(String(v))}"`).join(" ") : "";
+  let attrText = attrs.length ? " " + attrs.map(([k, v]) => `${k}="${escapeXMLAttribute(String(v))}"`).join(" ") : "";
   let children = node.children || [];
   let text = node.text || "";
   let hasText = text.trim().length > 0;
@@ -122,14 +138,14 @@ function combineMusicXML(xmlStrings) {
   for (let i = 0; i < xmlStrings.length; i++) {
     let root = parseMusicXML(xmlStrings[i]);
     if (!root || root.name !== "score-partwise") {
-      console.log(`Score ${i + 1}: ルートが score-partwise ではないためスキップします`);
+      console.log(`[merge] Score ${i + 1}: ルートが score-partwise ではないためスキップ`);
       continue;
     }
 
     let partList = findChild(root, "part-list");
     let partNodes = findChildren(root, "part");
     if (!partList || partNodes.length === 0) {
-      console.log(`Score ${i + 1}: part-list または part が見つからないためスキップします`);
+      console.log(`[merge] Score ${i + 1}: part-list または part が見つからないためスキップ`);
       continue;
     }
 
@@ -247,76 +263,67 @@ function combineMusicXML(xmlStrings) {
     serializeXMLNode(rootNode);
 }
 
-// ���s�J�n
-console.log("�_�E�����[�h�J�n...");
+// 実行開始
+console.log("[download] ダウンロード処理を開始");
 try {
   let downloadPromises = urls.map(url => downloadMusicXML(url));
   let xmlStrings = await Promise.all(downloadPromises);
   xmlStrings = xmlStrings.filter(xml => xml !== null);
 
   if (xmlStrings.length === 0) {
-    let alert = new Alert();
-    alert.title = "�G���[";
-    alert.message = "MusicXML�̃_�E�����[�h�ɑS�Ď��s���܂���";
-    alert.addAction("OK");
-    await alert.present();
+    await showUserError("エラー", "MusicXML のダウンロードに失敗しました。URL とネットワーク接続を確認してください。");
     return;
   }
 
-  console.log(`${xmlStrings.length}��MusicXML�𐳏�Ƀ_�E�����[�h���܂���`);
-  console.log("MusicXML��������...");
+  console.log(`[download] ダウンロード完了: ${xmlStrings.length} 件`);
+  console.log("[merge] 結合処理を開始");
   let combinedXML = combineMusicXML(xmlStrings);
 
   if (!combinedXML) {
-    let alert = new Alert();
-    alert.title = "�G���[";
-    alert.message = "MusicXML�̍����Ɏ��s���܂���";
-    alert.addAction("OK");
-    await alert.present();
+    await showUserError("エラー", "MusicXML の結合に失敗しました。入力ファイル形式を確認してください。");
     return;
   }
 
-  // �t�@�C�����𐶐��i�N�����������܂߂�j
+  // ファイル名を生成（日時付き）
   let now = new Date();
   let year = now.getFullYear();
-  let month = String(now.getMonth() + 1).padStart(2, '0');
-  let day = String(now.getDate()).padStart(2, '0');
-  let hour = String(now.getHours()).padStart(2, '0');
-  let minute = String(now.getMinutes()).padStart(2, '0');
+  let month = String(now.getMonth() + 1).padStart(2, "0");
+  let day = String(now.getDate()).padStart(2, "0");
+  let hour = String(now.getHours()).padStart(2, "0");
+  let minute = String(now.getMinutes()).padStart(2, "0");
   let fileName = `CombinedMusic_${year}${month}${day}_${hour}${minute}.musicxml`;
-  
-  // iCloud�ɕۑ�
+
+  // iCloud に保存
   let filePath = FileManager.iCloud().documentsDirectory() + "/" + fileName;
   FileManager.iCloud().writeString(filePath, combinedXML);
-  console.log(`�t�@�C���ۑ�����: ${fileName}`);
+  console.log(`[merge] 保存完了: ${fileName}`);
 
-  // �����A���[�g
+  // 完了通知
   let successAlert = new Alert();
-  successAlert.title = "����";
-  successAlert.message = `${xmlStrings.length}��MusicXML���������A\n�u${fileName}�v�Ƃ��ĕۑ����܂����B\n\n�t�@�C���̏ꏊ:\n${filePath}`;
-  successAlert.addAction("�t�@�C�������L");
+  successAlert.title = "完了";
+  successAlert.message = `${xmlStrings.length} 件の MusicXML を結合し、\n「${fileName}」として保存しました。\n\n保存先:\n${filePath}`;
+  successAlert.addAction("ファイルを共有");
   successAlert.addAction("OK");
   let response = await successAlert.present();
 
-  // ���L�A�N�V����
+  // 共有アクション
   if (response === 0) {
     try {
-      // iCloud�t�@�C���̓�����҂i3�b�ԑҋ@�j
-      console.log("iCloud������ҋ@��...");
+      // iCloud ファイルの同期待機（3 秒）
+      console.log("[share] iCloud 同期待機を開始");
       await new Promise(resolve => Timer.schedule(3000, false, resolve));
-      
+
       let fm = FileManager.iCloud();
       await fm.downloadFileFromiCloud(filePath);
 
       let shareSheet = new ShareSheet();
-      // �t�@�C���p�X���w�肵�ċ��L �� SeeScore2���uCopy to SeeScore�v�Ƃ��ĕ\�������
       shareSheet.addFile(filePath);
       await shareSheet.present();
-
+      console.log("[share] 共有シート表示に成功");
     } catch (shareError) {
-      console.error("iCloud���L�G���[:", shareError);
+      logDeveloperError("[share] iCloud 共有に失敗", shareError);
 
-      // ���[�J���ꎞ�R�s�[���g�����t�H�[���o�b�N
+      // ローカル一時コピー経由のフォールバック
       try {
         let localFM = FileManager.local();
         let tempPath = localFM.temporaryDirectory() + "/" + fileName;
@@ -327,18 +334,18 @@ try {
         let shareSheet = new ShareSheet();
         shareSheet.addFile(tempPath);
         await shareSheet.present();
+        console.log("[share] ローカル一時ファイルでの共有に成功");
 
-        // �ꎞ�t�@�C�����폜
+        // 一時ファイルを削除
         localFM.remove(tempPath);
-
       } catch (localError) {
-        console.error("���[�J�����L�G���[:", localError);
+        logDeveloperError("[share] ローカル共有フォールバックにも失敗", localError);
 
-        // �ŏI��i�Ƃ��ă��[�U�[�ւ̎蓮�ē�
+        // 最終手段としてユーザーへ手動共有を案内
         let errorAlert = new Alert();
-        errorAlert.title = "���L�ł��܂���";
-        errorAlert.message = `�������L�Ɏ��s���܂����B\n�蓮�ŋ��L���Ă��������F\n1. �t�@�C���A�v�����J��\n2. iCloud Drive > Scriptable > Documents\n3. ${fileName} ��I��\n4. ���L�{�^�����^�b�v\n5. SeeScore2 ��I��`;
-        errorAlert.addAction("�t�@�C���A�v�����J��");
+        errorAlert.title = "共有できませんでした";
+        errorAlert.message = `自動共有に失敗しました。手動で共有してください。\n\n1. ファイルアプリを開く\n2. iCloud Drive > Scriptable > Documents\n3. ${fileName} を選択\n4. 共有ボタンをタップ\n5. SeeScore2 を選択`;
+        errorAlert.addAction("ファイルアプリを開く");
         errorAlert.addAction("OK");
         let choice = await errorAlert.present();
         if (choice === 0) {
@@ -347,12 +354,7 @@ try {
       }
     }
   }
-
 } catch (error) {
-  console.error("�����G���[:", error);
-  let errorAlert = new Alert();
-  errorAlert.title = "�G���[";
-  errorAlert.message = `�������ɃG���[���������܂���:\n${error.toString()}`;
-  errorAlert.addAction("OK");
-  await errorAlert.present();
+  logDeveloperError("[merge] 実行時エラー", error);
+  await showUserError("エラー", "処理中に問題が発生しました。時間をおいて再実行してください。");
 }
