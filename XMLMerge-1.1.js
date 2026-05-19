@@ -83,6 +83,41 @@ function findChildren(node, name) {
   return (node.children || []).filter(c => c.name === name);
 }
 
+function nodeSignature(node) {
+  if (!node) return "";
+  return serializeXMLNode(node);
+}
+
+function getAttributeState(attributesNode) {
+  const state = {};
+  if (!attributesNode) return state;
+  const keys = ["divisions", "key", "time", "staves"];
+  for (let key of keys) state[key] = nodeSignature(findChild(attributesNode, key));
+  const clefs = findChildren(attributesNode, "clef");
+  state.clef = clefs.map(nodeSignature).join("|");
+  return state;
+}
+
+function buildAttributesDeltaNode(currentAttributes, previousState) {
+  if (!currentAttributes) return null;
+  const delta = createXMLNode("attributes");
+  const keys = ["divisions", "key", "time", "staves"];
+  for (let key of keys) {
+    const child = findChild(currentAttributes, key);
+    const signature = nodeSignature(child);
+    if (signature && previousState[key] !== signature) delta.children.push(cloneNode(child));
+  }
+
+  const clefs = findChildren(currentAttributes, "clef");
+  const clefSignature = clefs.map(nodeSignature).join("|");
+  if (clefSignature && previousState.clef !== clefSignature) {
+    for (let clef of clefs) delta.children.push(cloneNode(clef));
+  }
+
+  if (delta.children.length === 0) return null;
+  return delta;
+}
+
 function parseMusicXML(xmlString) {
   if (typeof XMLParser === "undefined") {
     throw new Error("XMLParser が利用できません");
@@ -134,6 +169,7 @@ function combineMusicXML(xmlStrings) {
   let selectedPartId = null;
   let sourceScorePart = null;
   let sourcePartName = null;
+  let previousMeasureAttributeState = {};
 
   for (let i = 0; i < xmlStrings.length; i++) {
     let root = parseMusicXML(xmlStrings[i]);
@@ -157,13 +193,26 @@ function combineMusicXML(xmlStrings) {
     }
 
     let targetPart = (selectedPartId && partNodes.find(p => p.attributes.id === selectedPartId)) || partNodes[0];
-    for (let measure of findChildren(targetPart, "measure")) {
+    let sourceMeasures = findChildren(targetPart, "measure");
+    for (let measureIndex = 0; measureIndex < sourceMeasures.length; measureIndex++) {
+      let measure = sourceMeasures[measureIndex];
       let m = cloneNode(measure);
       m.attributes.number = String(currentMeasureNumber++);
-      if (i > 0) {
-        m.children = m.children.filter(child => child.name !== "attributes");
-      } else if (!firstMeasureAttributes) {
-        firstMeasureAttributes = findChild(m, "attributes");
+
+      const currentAttributes = findChild(m, "attributes");
+      const sourceState = getAttributeState(currentAttributes);
+      const isBoundaryMeasure = i > 0 && measureIndex === 0;
+      const baselineState = isBoundaryMeasure ? {} : previousMeasureAttributeState;
+      const deltaAttributes = buildAttributesDeltaNode(currentAttributes, baselineState);
+
+      m.children = m.children.filter(child => child.name !== "attributes");
+      if (deltaAttributes) {
+        m.children.unshift(deltaAttributes);
+        previousMeasureAttributeState = { ...previousMeasureAttributeState, ...sourceState };
+      }
+
+      if (i === 0 && !firstMeasureAttributes && currentAttributes) {
+        firstMeasureAttributes = cloneNode(currentAttributes);
       }
       allMeasures.push(m);
     }
