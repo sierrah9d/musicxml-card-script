@@ -116,6 +116,8 @@ function combineMusicXML(xmlStrings) {
   let firstMeasureAttributes = null;
   let combinedPartList = null;
   let selectedPartId = null;
+  let sourceScorePart = null;
+  let sourcePartName = null;
 
   for (let i = 0; i < xmlStrings.length; i++) {
     let root = parseMusicXML(xmlStrings[i]);
@@ -134,6 +136,8 @@ function combineMusicXML(xmlStrings) {
     if (i === 0) {
       combinedPartList = cloneNode(partList);
       selectedPartId = partNodes[0].attributes.id || null;
+      sourceScorePart = findChildren(combinedPartList, "score-part").find(sp => sp.attributes.id === selectedPartId) || findChildren(combinedPartList, "score-part")[0] || null;
+      sourcePartName = sourceScorePart ? findChild(sourceScorePart, "part-name") : null;
     }
 
     let targetPart = (selectedPartId && partNodes.find(p => p.attributes.id === selectedPartId)) || partNodes[0];
@@ -175,16 +179,67 @@ function combineMusicXML(xmlStrings) {
 
   let finalPartId = selectedPartId || "P1";
   let partListNode = combinedPartList || createXMLNode("part-list");
-  if (findChildren(partListNode, "score-part").length === 0) {
-    let scorePart = createXMLNode("score-part", { id: finalPartId });
+
+  let scoreParts = findChildren(partListNode, "score-part");
+  let selectedScorePart = scoreParts.find(sp => sp.attributes.id === finalPartId) || scoreParts[0] || null;
+
+  if (!selectedScorePart) {
+    selectedScorePart = createXMLNode("score-part", { id: finalPartId });
+    partListNode.children.push(selectedScorePart);
+  }
+
+  selectedScorePart.attributes.id = finalPartId;
+  let selectedPartName = findChild(selectedScorePart, "part-name");
+  if (sourcePartName) {
+    if (selectedPartName) {
+      selectedPartName.text = sourcePartName.text;
+    } else {
+      selectedScorePart.children.unshift(cloneNode(sourcePartName));
+    }
+  } else if (!selectedPartName) {
     let partName = createXMLNode("part-name");
     partName.text = "Combined Sequence";
-    scorePart.children.push(partName);
-    partListNode.children.push(scorePart);
+    selectedScorePart.children.unshift(partName);
   }
+
+  let sourceMidiDevice = sourceScorePart ? findChild(sourceScorePart, "midi-device") : null;
+  let sourceMidiInstrument = sourceScorePart ? findChild(sourceScorePart, "midi-instrument") : null;
+  let currentMidiDevice = findChild(selectedScorePart, "midi-device");
+  let currentMidiInstrument = findChild(selectedScorePart, "midi-instrument");
+
+  if (sourceMidiDevice) {
+    if (currentMidiDevice) currentMidiDevice.attributes = { ...sourceMidiDevice.attributes };
+    else selectedScorePart.children.push(cloneNode(sourceMidiDevice));
+  } else if (currentMidiDevice) {
+    selectedScorePart.children = selectedScorePart.children.filter(c => c !== currentMidiDevice);
+  }
+
+  if (sourceMidiInstrument) {
+    if (currentMidiInstrument) {
+      currentMidiInstrument.attributes = { ...sourceMidiInstrument.attributes };
+      currentMidiInstrument.children = sourceMidiInstrument.children.map(cloneNode);
+      currentMidiInstrument.text = sourceMidiInstrument.text;
+    } else {
+      selectedScorePart.children.push(cloneNode(sourceMidiInstrument));
+    }
+  } else if (currentMidiInstrument) {
+    selectedScorePart.children = selectedScorePart.children.filter(c => c !== currentMidiInstrument);
+  }
+
+  if (!sourceMidiDevice && !sourceMidiInstrument) {
+    selectedScorePart.children = selectedScorePart.children.filter(c => c.name !== "midi-device" && c.name !== "midi-instrument");
+  }
+
+  partListNode.children = [selectedScorePart];
 
   let partNode = createXMLNode("part", { id: finalPartId });
   partNode.children = allMeasures;
+
+  let partListIds = findChildren(partListNode, "score-part").map(sp => sp.attributes.id).filter(Boolean);
+  if (!partListIds.includes(partNode.attributes.id)) {
+    throw new Error(`part-list の score-part id (${partListIds.join(",") || "none"}) と part id (${partNode.attributes.id}) が不整合です`);
+  }
+
   rootNode.children.push(work, identification, partListNode, partNode);
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n` +
