@@ -358,17 +358,40 @@ try {
   // 共有アクション
   if (response === 0) {
     try {
-      // iCloud ファイルの同期待機（3 秒）
-      console.log("[share] iCloud 同期待機を開始");
-      await new Promise(resolve => Timer.schedule(3000, false, resolve));
+      const maxWaitMs = 30000;
+      const pollIntervalMs = 500;
+      const waitStart = Date.now();
+      const fm = FileManager.iCloud();
+      let waitReason = "";
 
-      let fm = FileManager.iCloud();
-      await fm.downloadFileFromiCloud(filePath);
+      console.log(`[share] iCloud 同期待機を開始: timeout=${maxWaitMs}ms interval=${pollIntervalMs}ms`);
+      while (Date.now() - waitStart <= maxWaitMs) {
+        const elapsed = Date.now() - waitStart;
+        const exists = fm.fileExists(filePath);
+        const isDownloaded = exists && fm.isFileDownloaded(filePath);
+        console.log(`[share] 待機経過時間: ${elapsed}ms exists=${exists} downloaded=${isDownloaded}`);
 
-      let shareSheet = new ShareSheet();
-      shareSheet.addFile(filePath);
-      await shareSheet.present();
-      console.log("[share] 共有シート表示に成功");
+        if (!exists) {
+          waitReason = "iCloud 上でファイルが確認できない";
+        } else if (!isDownloaded) {
+          waitReason = "iCloud ファイルが未ダウンロード";
+          await fm.downloadFileFromiCloud(filePath);
+        } else {
+          let shareSheet = new ShareSheet();
+          shareSheet.addFile(filePath);
+          await shareSheet.present();
+          console.log("[share] 共有シート表示に成功");
+          waitReason = "";
+          break;
+        }
+
+        await new Promise(resolve => Timer.schedule(pollIntervalMs, false, resolve));
+      }
+
+      if (waitReason) {
+        const totalElapsed = Date.now() - waitStart;
+        throw new Error(`iCloud 同期待機タイムアウト: elapsed=${totalElapsed}ms reason=${waitReason}`);
+      }
     } catch (shareError) {
       logDeveloperError("[share] iCloud 共有に失敗", shareError);
 
