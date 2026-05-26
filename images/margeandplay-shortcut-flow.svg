@@ -1,5 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1122" height="1402" viewBox="0 0 1122 1402">
   <title>MargeAndPlay shortcut workflow</title>
-  <desc>Composite explanatory image of the iOS shortcut MargeAndPlay workflow.</desc>
-  <image href="data:image/png;base64,PLACEHOLDER" width="1122" height="1402"/>
+  <desc>Wrapped explanatory diagram of the iOS shortcut MargeAndPlay workflow.</desc>
+  <defs>
+    <linearGradient id="box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#303034"/><stop offset="1" stop-color="#202124"/></linearGradient>
+    <style>
+      .bg{fill:#050505}.title{font:700 40px -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;fill:#fff}.box{fill:url(#box);stroke:#3d3d42;stroke-width:1.5}.num{fill:#111;stroke:#bfc0c4;stroke-width:4}.numtxt{font:700 34px -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;fill:#f3f3f3;text-anchor:middle;dominant-baseline:central}.txt{font:500 34px -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;fill:#fff}.small{font:500 30px -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;fill:#fff}.blue{fill:#0a84ff}.gray{fill:#9ba1a9}.orange{fill:#ff9500}.yellow{fill:#ffd60a}.line{stroke:#a6a6ad;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a6a6ad"/></marker>
+  </defs>
+  <rect class="bg" width="1122" height="1402"/>
+  <rect x="96" y="24" width="50" height="50" rx="13" fill="#ffcc00"/><text x="168" y="64" class="title">MargeAndPlay</text><circle cx="443" cy="48" r="19" fill="#333"/><text x="443" y="46" font-size="26" fill="#bbb" text-anchor="middle" dominant-baseline="central">⌄</text>
+
+  <!-- left column -->
+  <g transform="translate(0,0)">
+    <circle class="num" cx="65" cy="120" r="25"/><text class="numtxt" x="65" y="120">1</text><rect class="box" x="96" y="86" width="430" height="88" rx="24"/><text class="txt" x="126" y="141"><tspan class="gray">#</tspan><tspan dx="24" class="blue">入力</tspan><tspan dx="14">から数字を取得</tspan></text>
+    <path class="line" d="M311 174 V214"/>
+    <circle class="num" cx="65" cy="254" r="25"/><text class="numtxt" x="65" y="254">2</text><rect class="box" x="96" y="220" width="430" height="130" rx="24"/><text class="txt" x="126" y="274"><tspan class="orange">×</tspan><tspan dx="22">変数 </tspan><tspan class="blue">CardCount</tspan><tspan> を</tspan></text><text class="txt" x="126" y="325"><tspan class="gray">#</tspan><tspan dx="22" class="blue">数字</tspan><tspan> に設定</tspan></text>
+    <path class="line" d="M311 350 V389"/>
+    <circle class="num" cx="65" cy="424" r="25"/><text class="numtxt" x="65" y="424">3</text><rect class="box" x="96" y="396" width="430" height="82" rx="24"/><text class="txt" x="126" y="449"><tspan class="gray">↻</tspan><tspan dx="24" class="orange">×</tspan><tspan dx="18" class="blue">CardCount</tspan><tspan> 繰り返す</tspan></text>
+    <path class="line" d="M311 478 V518"/>
+    <circle class="num" cx="65" cy="555" r="25"/><text class="numtxt" x="65" y="555">4</text><rect class="box" x="96" y="526" width="430" height="150" rx="24"/><text class="txt" x="126" y="581"><tspan class="yellow">▣</tspan><tspan dx="22">アラート </tspan><tspan class="blue">QRコード</tspan></text><text class="txt" x="126" y="636"><tspan class="blue">を撮影します</tspan><tspan> を表示 〉</tspan></text>
+    <path class="line" d="M311 676 V716"/>
+    <circle class="num" cx="65" cy="755" r="25"/><text class="numtxt" x="65" y="755">5</text><rect class="box" x="96" y="724" width="430" height="145" rx="24"/><text class="txt" x="126" y="779"><tspan class="gray">▦</tspan><tspan dx="22">QRまたはバーコード</tspan></text><text class="txt" x="126" y="833">をスキャン</text>
+    <path class="line" d="M311 869 V909"/>
+    <circle class="num" cx="65" cy="947" r="25"/><text class="numtxt" x="65" y="947">6</text><rect class="box" x="96" y="917" width="430" height="144" rx="24"/><text class="txt" x="126" y="970"><tspan class="gray">Y</tspan><tspan dx="22" class="blue">繰り返しインデックス</tspan></text><text class="small" x="126" y="1021"><tspan class="blue">が次と等しい</tspan><tspan> </tspan><tspan class="blue">1</tspan><tspan> の場合 ＋</tspan></text>
+    <path class="line" d="M311 1061 V1100"/>
+    <circle class="num" cx="65" cy="1138" r="25"/><text class="numtxt" x="65" y="1138">7</text><rect class="box" x="96" y="1108" width="430" height="138" rx="24"/><text class="txt" x="126" y="1160"><tspan class="orange">×</tspan><tspan dx="22">変数 </tspan><tspan class="blue">URLList</tspan><tspan> を</tspan></text><text class="txt" x="126" y="1212"><tspan class="gray">▦</tspan><tspan dx="22" class="blue">QR/バーコード</tspan><tspan> に設定</tspan></text>
+    <path class="line" d="M311 1246 V1284"/>
+    <circle class="num" cx="65" cy="1320" r="25"/><text class="numtxt" x="65" y="1320">8</text><rect class="box" x="96" y="1290" width="430" height="82" rx="24"/><text class="txt" x="126" y="1343"><tspan class="gray">Y</tspan><tspan dx="28">その他の場合</tspan></text>
+  </g>
+
+  <!-- connector -->
+  <path d="M540 1360 H575 V36 H622" stroke="#a6a6ad" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- right column -->
+  <g transform="translate(0,0)">
+    <circle class="num" cx="616" cy="120" r="25"/><text class="numtxt" x="616" y="120">9</text><rect class="box" x="650" y="80" width="390" height="130" rx="24"/><text class="txt" x="680" y="135"><tspan class="orange">×</tspan><tspan dx="22" class="blue">QR/バーコード</tspan><tspan> を</tspan></text><text class="txt" x="680" y="186"><tspan class="blue">URLList</tspan><tspan> に追加</tspan></text>
+    <path class="line" d="M845 210 V250"/>
+    <circle class="num" cx="616" cy="286" r="25"/><text class="numtxt" x="616" y="286">10</text><rect class="box" x="650" y="254" width="390" height="82" rx="24"/><text class="txt" x="680" y="307"><tspan class="gray">Y</tspan><tspan dx="26">If文の終了</tspan></text>
+    <path class="line" d="M845 336 V375"/>
+    <circle class="num" cx="616" cy="412" r="25"/><text class="numtxt" x="616" y="412">11</text><rect class="box" x="650" y="383" width="390" height="82" rx="24"/><text class="txt" x="680" y="436"><tspan class="gray">↻</tspan><tspan dx="26">繰り返しの終了</tspan></text>
+    <path class="line" d="M845 465 V505"/>
+    <circle class="num" cx="616" cy="543" r="25"/><text class="numtxt" x="616" y="543">12</text><rect class="box" x="650" y="514" width="390" height="132" rx="24"/><text class="txt" x="680" y="566"><tspan class="orange">×</tspan><tspan dx="22">変数 </tspan><tspan class="blue">URLs</tspan><tspan> を</tspan></text><text class="txt" x="680" y="617"><tspan class="orange">×</tspan><tspan dx="22" class="blue">URLList</tspan><tspan> に設定</tspan></text>
+    <path class="line" d="M845 646 V686"/>
+    <circle class="num" cx="616" cy="725" r="25"/><text class="numtxt" x="616" y="725">13</text><rect class="box" x="650" y="694" width="390" height="144" rx="24"/><text class="txt" x="680" y="750"><tspan class="gray">{}</tspan><tspan dx="22">Run </tspan><tspan class="blue">XMLMerge</tspan></text><text class="txt" x="680" y="801"><tspan>with </tspan><tspan class="orange">×</tspan><tspan dx="16" class="blue">URLs</tspan><tspan> 〉</tspan></text>
+  </g>
 </svg>
