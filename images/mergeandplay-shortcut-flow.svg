@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1122" height="1402" viewBox="0 0 1122 1402">
-  <title>MargeAndPlay shortcut workflow</title>
-  <desc>Wrapped explanatory diagram of the iOS shortcut MargeAndPlay workflow.</desc>
+  <title>MergeAndPlay shortcut workflow</title>
+  <desc>Wrapped explanatory diagram of the iOS shortcut MergeAndPlay workflow.</desc>
   <defs>
     <linearGradient id="box" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#303034"/><stop offset="1" stop-color="#202124"/></linearGradient>
     <style>
@@ -9,7 +9,7 @@
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a6a6ad"/></marker>
   </defs>
   <rect class="bg" width="1122" height="1402"/>
-  <rect x="96" y="24" width="50" height="50" rx="13" fill="#ffcc00"/><text x="168" y="64" class="title">MargeAndPlay</text><circle cx="443" cy="48" r="19" fill="#333"/><text x="443" y="46" font-size="26" fill="#bbb" text-anchor="middle" dominant-baseline="central">⌄</text>
+  <rect x="96" y="24" width="50" height="50" rx="13" fill="#ffcc00"/><text x="168" y="64" class="title">MergeAndPlay</text><circle cx="443" cy="48" r="19" fill="#333"/><text x="443" y="46" font-size="26" fill="#bbb" text-anchor="middle" dominant-baseline="central">⌄</text>
 
   <!-- left column -->
   <g transform="translate(0,0)">
