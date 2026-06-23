@@ -28,6 +28,8 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
 - iPhone または iPad
 - Apple の「ショートカット」アプリ
 - Scriptable アプリ
+  - 公式 App Store: <https://apps.apple.com/jp/app/scriptable/id1405459188>
+  - iPhone / iPad 上で JavaScript を実行できるアプリです。このリポジトリでは、ショートカットから渡された MusicXML URL のリストを受け取り、`XMLMerge-1.1.js` で取得・結合するために使います。
 - MusicXML ファイル
 - MusicXML ファイルを公開する場所
   - GitHub Pages
@@ -36,6 +38,7 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
   - その他、iPhone からアクセスできる URL
 - QR コードを印刷するための紙とプリンタ
 - 必要に応じて MusicXML を開ける楽譜アプリ
+  - 作者の環境では SeeScore 2 を使用しています: <https://apps.apple.com/jp/app/seescore-2/id1515250125>
 
 ---
 
@@ -44,6 +47,7 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
 先に Scriptable に MusicXML 結合用スクリプトを作成します。
 
 1. iPhone / iPad に Scriptable をインストールする。
+   - 公式 App Store: <https://apps.apple.com/jp/app/scriptable/id1405459188>
 2. Scriptable を開く。
 3. 右上の `+` を押して新規スクリプトを作成する。
 4. スクリプト名を `XMLMerge` にする。
@@ -64,6 +68,23 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
 - 2回目以降の読み取り結果を `URLList` に追加する。
 - 完成したリストを `URLs` という変数に入れる。
 - `URLs` を入力として `XMLMerge` を実行する。
+
+---
+
+## 共有リンクからショートカットを取得する
+
+手作業で `MargeAndPlay` を作成する代わりに、次の iCloud 共有リンクからショートカットを取得できます。
+
+<https://www.icloud.com/shortcuts/a733c5c148f240468b31b25716c15106>
+
+取得する手順は次のとおりです。
+
+1. iPhone / iPad で上記の iCloud 共有リンクを開く。
+2. 「ショートカットを取得」または「ショートカットを追加」をタップする。
+3. ショートカットアプリで内容を確認し、必要に応じて `XMLMerge` を呼び出すアクション名を Scriptable 側のスクリプト名に合わせる。
+4. 追加後、ショートカット一覧に `MargeAndPlay` が表示されることを確認する。
+
+共有リンクから取得した場合でも、Scriptable 側に `XMLMerge` スクリプトを作成しておく必要があります。
 
 ---
 

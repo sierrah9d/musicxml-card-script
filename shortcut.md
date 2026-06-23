@@ -1,8 +1,12 @@
 ﻿# ショートカット解説: QRコード複数スキャン
 
-このショートカットは、複数のQRコードやバーコードを連続でスキャンし、スキャンした内容（musicXML）をScriptabe で動作する JavaScript XMLMerge で合成処理を行うものです。
+このショートカットは、複数のQRコードやバーコードを連続でスキャンし、スキャンした内容（musicXML）をScriptable で動作する JavaScript XMLMerge で合成処理を行うものです。
 
 初めてショートカットを作成する方でも分かりやすいように、各ステップを丁寧に解説します。
+
+Scriptable は iPhone / iPad 上で JavaScript を実行できるアプリです。このショートカットでは、スキャンした MusicXML URL のリストを Scriptable 側の `XMLMerge` スクリプトへ渡し、MusicXML の取得と結合を行います。公式 App Store URL は <https://apps.apple.com/jp/app/scriptable/id1405459188> です。
+
+結合後の MusicXML は対応する楽譜アプリで開けます。作者の環境では SeeScore 2（<https://apps.apple.com/jp/app/seescore-2/id1515250125>）を使用しています。
 
 ---
 
@@ -12,6 +16,23 @@
 * スキャンしたQRコードの内容（URLなど）を一覧で確認できます。
 * スキャンしたURLリストを別のショートカット（`XMLMerge`）に渡して処理を継続できます。
 
+
+---
+
+## 共有リンクから取得する場合
+
+`MargeAndPlay` は、次の iCloud 共有リンクから取得できます。
+
+<https://www.icloud.com/shortcuts/a733c5c148f240468b31b25716c15106>
+
+取得する手順は次のとおりです。
+
+1. iPhone / iPad で上記リンクを開きます。
+2. 表示されたショートカット画面で「ショートカットを取得」または「ショートカットを追加」をタップします。
+3. 追加前にアクション内容を確認し、最後に呼び出す `XMLMerge` の名前が Scriptable 側で作成したスクリプト名と一致しているか確認します。
+4. 追加後、ショートカットアプリの一覧に `MargeAndPlay` が表示されることを確認します。
+
+このリンクから取得した場合は、以下の手作業での作成手順を省略できます。動作を確認したい場合や自分で作り直したい場合は、以降の手順を参照してください。
 
 ---
 
