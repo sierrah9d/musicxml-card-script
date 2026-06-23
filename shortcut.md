@@ -1,8 +1,12 @@
 ﻿# ショートカット解説: QRコード複数スキャン
 
-このショートカットは、複数のQRコードやバーコードを連続でスキャンし、スキャンした内容（musicXML）をScriptabe で動作する JavaScript XMLMerge で合成処理を行うものです。
+このショートカットは、複数のQRコードやバーコードを連続でスキャンし、スキャンした内容（musicXML）をScriptable で動作する JavaScript XMLMerge で合成処理を行うものです。
 
 初めてショートカットを作成する方でも分かりやすいように、各ステップを丁寧に解説します。
+
+Scriptable は iPhone / iPad 上で JavaScript を実行できるアプリです。このショートカットでは、スキャンした MusicXML URL のリストを Scriptable 側の `XMLMerge` スクリプトへ渡し、MusicXML の取得と結合を行います。公式 App Store URL は <https://apps.apple.com/jp/app/scriptable/id1405459188> です。
+
+結合後の MusicXML は対応する楽譜アプリで開けます。作者の環境では SeeScore 2（<https://apps.apple.com/jp/app/seescore-2/id1515250125>）を使用しています。
 
 ---
 

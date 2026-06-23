@@ -26,6 +26,8 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
 - iPhone または iPad
 - Apple の「ショートカット」アプリ
 - Scriptable アプリ
+  - 公式 App Store: <https://apps.apple.com/jp/app/scriptable/id1405459188>
+  - iPhone / iPad 上で JavaScript を実行できるアプリです。このリポジトリでは、ショートカットから渡された MusicXML URL のリストを受け取り、`XMLMerge-1.1.js` で取得・結合するために使います。
 - MusicXML ファイル
 - MusicXML ファイルを公開する場所
   - GitHub Pages
@@ -34,6 +36,7 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
   - その他、iPhone からアクセスできる URL
 - QR コードを印刷するための紙とプリンタ
 - 必要に応じて MusicXML を開ける楽譜アプリ
+  - 作者の環境では SeeScore 2 を使用しています: <https://apps.apple.com/jp/app/seescore-2/id1515250125>
 
 ---
 
@@ -42,6 +45,7 @@ MusicXML の短い楽譜データを QR コード付きカードにし、iPhone 
 先に Scriptable に MusicXML 結合用スクリプトを作成します。
 
 1. iPhone / iPad に Scriptable をインストールする。
+   - 公式 App Store: <https://apps.apple.com/jp/app/scriptable/id1405459188>
 2. Scriptable を開く。
 3. 右上の `+` を押して新規スクリプトを作成する。
 4. スクリプト名を `XMLMerge` にする。
